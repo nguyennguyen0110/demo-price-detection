@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Nguyen Nguyen">
+    <meta name="description" content="Render html for demo of Price Detection">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo read-tag</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+</head>
+
+<body>
+<header>
+    <h1>Price Detection Demo</h1>
+    <nav>
+        <ul class="menu">
+            <li class="menu-li"><a href="/">Home</a></li>
+            <li class="menu-li"><a href="/demo-read-tag">demo-read-tag</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h2>read-tag</h2>
+    {% if not output %}
+    <h3>Description:</h3>
+    <ul>
+        <li>
+            Read all text from image, get first text (at the top of image) as product
+            name and number which has the largest printed area as selling price.
+        </li>
+        <li>
+            <i>(Removed in this demo)</i> Query product name to database for product
+            information, query for price and compare with detected selling price.
+        </li>
+    </ul>
+    <h3>Details:</h3>
+    <ul>
+        <li>
+            Read all text, pick text at the top (first text) as product name and
+            number with the largest printed area as selling price.
+        </li>
+        <li>
+            Detect texts in image using MMOCR PANet, transform polygon into rectangle
+            image. Read the text from rectangle using Tesseract then process to get
+            information.
+        </li>
+        <li><i>NOTE: two features below are removed in this demo.</i></li>
+        <li>
+            From product name try to query product from database, if not found any,
+            then try to get product with similar name.
+        </li>
+        <li>
+            If product found, try query price in database. If price found, compare
+            with selling price to see if they are matched.
+        </li>
+    </ul>
+    <h3>Notes:</h3>
+    <ul>
+        <li>
+            The image of price tag must be one tag per image so all characters can
+            be seen clearly.
+        </li>
+        <li>Image must not be blurred nor overexposed.</li>
+        <li>Image should be straight (both vertical and horizontal).</li>
+        <li>
+            Detect model return text from top to bottom, so tag should be at top of
+            the picture.
+        </li>
+        <li>
+            Model will detect all text in image, so it is best to have only the
+            price tag in our picture.
+        </li>
+        <li>
+            Product name must be placed at top of the picture, and selling price
+            must be the largest printed number in the image.
+        </li>
+        <li>Current model is for demo only.</li>
+        <li>Should save tag image for continuously train model.</li>
+    </ul>
+    {% endif %}
+    <h3>Demo:</h3>
+    <h4>Input:</h4>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="input">image: </label>
+        <input id="input" type="file" name="image">
+        <div class="default-photo">
+            <img src="/static/image/IMG_4962.jpeg" alt="Default image for demo" />
+        </div>
+        <p>NOTE: if you do not upload image, this image will be used for demo.</p>
+        <div class="form_button">
+            <input type="submit" value="Get result">
+        </div>
+    </form>
+    {% if (output|length > 0) %}
+    <h4>Output:</h4>
+    {% if "error" in output %}
+    <p>Error in "read-tag": {{output["error"]}}</p>
+    {% endif %}
+    {% if ("height" in output) %}
+    <table>
+        <thead>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>height</td>
+            {% if "height" in output %}
+            <td>{{'{:,}'.format(output["height"])}}</td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>width</td>
+            {% if "width" in output %}
+            <td>{{'{:,}'.format(output["width"])}}</td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>texts</td>
+            {% if "texts" in output %}
+            <td>
+                <ul>
+                    {% for text in output["texts"] %}
+                    <li>{{text}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>decoded_texts</td>
+            {% if "decoded_texts" in output %}
+            <td>
+                <ul>
+                    {% for text in output["decoded_texts"] %}
+                    <li>{{text}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>polygons</td>
+            {% if "polygons" in output %}
+            <td>
+                <ul>
+                    {% for p in output["polygons"] %}
+                    <li>{{p|string()}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>product_name</td>
+            {% if "product_name" in output %}
+            <td>{{output["product_name"]}}</td>
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>price</td>
+            {% if "price" in output %}
+            {% if output["price"] is none %}
+            <td>null</td>
+            {% else %}
+            <td>{{output["price"]}}</td>
+            {% endif %}
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>price_index</td>
+            {% if "price_index" in output %}
+            {% if output["price_index"] is none %}
+            <td>null</td>
+            {% else %}
+            <td>{{output["price_index"]}}</td>
+            {% endif %}
+            {% else %}
+            <td>not in result</td>
+            {% endif %}
+        </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    <h3>Raw JSON: </h3>
+    <p>NOTE: Only show the 'data' filed of response.</p>
+    <div class="read_tag_json">
+        <pre>{{raw_out}}</pre>
+    </div>
+    {% endif %}
+</main>
+
+<footer>
+    <hr>
+    <p>by: Nguyen Nguyen</p>
+    <p>nguyennta@icloud.com</p>
+    <p>(+84) 77 777 5995</p>
+    <p>
+        Portfolio:
+        <a href="https://portfolio-698202522757.asia-southeast1.run.app" target="_blank" rel="noopener noreferrer">
+            https://portfolio-698202522757.asia-southeast1.run.app
+        </a>
+    </p>
+</footer>
+</body>
+
+</html>
