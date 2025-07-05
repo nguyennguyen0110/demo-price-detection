@@ -21,8 +21,11 @@ nguyennta@icloud.com
 
 ## Contributing
 Project structure:
-- static: contain static file such as css, images.
-- templates: contain html file.
+- model: contain AI models, include binary file or weights file, best point file.
+- service: contain service files.
+- static: contain static files such as css, images.
+- templates: contain html files.
+- utilities: contain utility files.
 - app.py: main file to run this project (Flask application is created here).
 - Dockerfile: file used to containerize this project with docker.
 - README.md: this project instruction file.
