@@ -201,7 +201,10 @@
     </table>
     {% endif %}
     <h3>Raw JSON: </h3>
-    <p>NOTE: Only show the 'data' filed of response.</p>
+    <p>
+        The API return: {"code": int - code number, "message": string - the message,
+        "data": the result}. Here only show the "data" filed of response.
+    </p>
     <div class="read_tag_json">
         <pre>{{raw_out}}</pre>
     </div>

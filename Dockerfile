@@ -34,4 +34,4 @@ COPY model/vie_price_tag.traineddata  /usr/share/tesseract-ocr/4.00/tessdata/
 COPY . .
 
 # The command to run when start docker image
-CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:8080", "-t", "120", "app:app"]
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:8080", "-t", "120", "app:app"]

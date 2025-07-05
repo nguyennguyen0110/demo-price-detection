@@ -66,6 +66,3 @@ def demo_read_tag():
 
 if __name__ == '__main__':
     app.run()
-
-# docker build -t demo_pd:v0.0.1 .
-# docker run -p 8000:8080 demo_pd:v0.0.1
