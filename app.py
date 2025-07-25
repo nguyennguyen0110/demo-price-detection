@@ -45,7 +45,7 @@ def demo_read_tag():
         return render_template(template, output={}, raw_out='')
     # Else POST method
     # Check content_type
-    if not request.content_type.startswith(Const.FORM):
+    if request.content_type is None or not request.content_type.startswith(Const.FORM):
         res = {'code': 400, 'message': Const.NOT_FORM, 'data': {}}
     # Check for image
     elif 'image' not in request.files:
