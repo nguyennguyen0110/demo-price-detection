@@ -7,11 +7,12 @@ This project is demo version for Price Detection project
 
 ## Installation
 - Install docker, vary depend on the OS, check https://docs.docker.com/engine/install/
-- Build docker image (may need admin or sudo prefix), note that there is dot at the end. You can 
-change the image name and version to your own need:
+- Build docker image (may need admin or sudo prefix), note that there is dot at the 
+end. You can change the image name and version to your own need:
     
         docker build -t image_name:version .
-- Run container with the image created, change docker port and app port to the actual port used:
+- Run container with the image created, change docker port and app port to the actual 
+port used:
     
         docker run -p 127.0.0.1:docker_port:app_port image_name:version
 
@@ -42,7 +43,7 @@ This is a demo project for portfolio page.
 
 
 ## Project status
-- Working
+- Finished.
 - Current host: https://demo-price-detection-698202522757.asia-southeast1.run.app
 - This project’s source code is hosted on GitHub, with CI/CD handled by Cloud Build 
 and deployed via Cloud Run — both part of Google Cloud Platform (GCP).

@@ -107,8 +107,12 @@ pre {
 }
 
 .read_tag_json {
-    width: 95%;
-    display: flex;
-    align-items: start;
-    margin: 0.5em;
+    background-color: #202020;
+    padding: 1em;
+    color: white;
+    border-radius: 1em;
+    white-space: pre;
+    overflow-x: auto;
+    display: inline-block;
+    max-width: 100vw;
 }

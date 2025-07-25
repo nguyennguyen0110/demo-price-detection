@@ -13,7 +13,7 @@ def order_points(points):
     :return: Sorted array.
     """
     # Initialize a list of coordinates
-    quadrilateral = np.zeros((4, 2), dtype="float32")
+    quadrilateral = np.zeros((4, 2), dtype='float32')
     # The top-left point will have the smallest sum, whereas the bottom-right point will have the largest sum
     total = points.sum(axis=1)
     quadrilateral[0] = points[np.argmin(total)]
@@ -52,7 +52,7 @@ def four_point_transform(image, points):
     # "birds eye view", (i.e. top-down view) of the image, again specifying points in the top-left, top-right,
     # bottom-right, and bottom-left order
     destination = np.array([[0, 0], [max_width - 1, 0], [max_width - 1, max_height - 1], [0, max_height - 1]],
-                           dtype="float32")
+                           dtype='float32')
     # Compute the perspective transform matrix and then apply it
     matrix = cv2.getPerspectiveTransform(quadrilateral, destination)
     warped = cv2.warpPerspective(image, matrix, (max_width, max_height))
@@ -69,10 +69,10 @@ def get_price_from_text(text):
     # Turn to lower case
     check_price = text.lower()
     # Remove unit (/box, /kg, /ml, ...) if any
-    check_price = check_price.split("/")
+    check_price = check_price.split('/')
     # Remove currency unit, space and punctuation if any
-    for e in ["vnd", "dong", "d", ".", ",", " "]:
-        check_price[0] = check_price[0].replace(e, "")
+    for e in ['vnd', 'dong', 'd', '.', ',', ' ']:
+        check_price[0] = check_price[0].replace(e, '')
     # If there is a "/" or less, and first string is all digits
     if (len(check_price) < 3) and (check_price[0].isdigit()):
         return int(check_price[0])
@@ -132,12 +132,12 @@ def read_tag(image):
             price_index = len(texts) - 1
             number_area = text['area']
     result = {
-        "height": image.shape[0], "width": image.shape[1],
-        "texts": texts, "decoded_texts": decoded_texts, "polygons": polygons,
-        "price": price, "price_index": price_index
+        'height': image.shape[0], 'width': image.shape[1],
+        'texts': texts, 'decoded_texts': decoded_texts, 'polygons': polygons,
+        'price': price, 'price_index': price_index
     }
     if len(texts) == 0:
-        result["product_name"] = '' if len(decoded_texts) == 0 else decoded_texts[0]
+        result['product_name'] = '' if len(decoded_texts) == 0 else decoded_texts[0]
     else:
-        result["product_name"] = texts[0]
+        result['product_name'] = texts[0]
     return result

@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 # Specify base image
 FROM ubuntu:22.04
 
@@ -6,23 +5,17 @@ FROM ubuntu:22.04
 EXPOSE 8080
 
 # Install Python, pip and Tesseract
-RUN apt-get update && \
-    apt-get install -y python3 && \
-    apt-get install -y python3-pip && \
-    apt-get install -y tesseract-ocr
+RUN apt-get update && apt-get install -y python3 python3-pip tesseract-ocr && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
 # DO NOT install torch higher version because it use C++ 17 while mmcv use C++ 14
-RUN pip3 install ninja==1.11.1 && \
-    pip3 install psutil==5.9.7 && \
-    pip3 install Pillow==9.4.0 && \
-    pip3 install numpy==1.23.5 && \
-    pip3 install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cpu && \
+RUN pip3 install ninja==1.11.1 psutil==5.9.7 Pillow==9.4.0 numpy==1.23.5 && \
+    pip3 install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2  \
+    --index-url https://download.pytorch.org/whl/cpu && \
     pip3 install openmim==0.3.9
 
-RUN mim install mmengine==0.10.2 && \
-    mim install mmcv-lite==2.1.0 && \
-    mim install mmdet==3.2.0 && \
+RUN mim install mmengine==0.10.2 mmcv-lite==2.1.0 mmdet==3.2.0 && \
     mim install mmocr==1.0.1
 
 COPY requirements.txt .

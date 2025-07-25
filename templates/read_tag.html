@@ -7,7 +7,7 @@
     <meta name="description" content="Render html for demo of Price Detection">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo read-tag</title>
-    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -15,8 +15,10 @@
     <h1>Price Detection Demo</h1>
     <nav>
         <ul class="menu">
-            <li class="menu-li"><a href="/">Home</a></li>
-            <li class="menu-li"><a href="/demo-read-tag">demo-read-tag</a></li>
+            <li class="menu-li"><a href="{{ url_for('root') }}">Home</a></li>
+            <li class="menu-li">
+                <a href="{{ url_for('demo_read_tag') }}">demo-read-tag</a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -92,7 +94,8 @@
         <label for="input">image: </label>
         <input id="input" type="file" name="image">
         <div class="default-photo">
-            <img src="/static/image/IMG_4962.jpeg" alt="Default image for demo" />
+            <img src="{{ url_for('static', filename='image/IMG_4962.jpeg') }}"
+                 alt="Default image for demo" />
         </div>
         <p>NOTE: if you do not upload image, this image will be used for demo.</p>
         <div class="form_button">
@@ -101,11 +104,11 @@
     </form>
     {% if (output|length > 0) %}
     <h4>Output:</h4>
-    {% if "error" in output %}
-    <p>Error in "read-tag": {{output["error"]}}</p>
-    {% endif %}
-    {% if ("height" in output) %}
+    <p>code: {{ output['code'] }}</p>
+    <p>message: {{ output['message'] }}</p>
+    <p>data:</p>
     <table>
+        {% if output['data'] %}
         <thead>
         <tr>
             <th>Field</th>
@@ -115,105 +118,59 @@
         <tbody>
         <tr>
             <td>height</td>
-            {% if "height" in output %}
-            <td>{{'{:,}'.format(output["height"])}}</td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
+            <td>{{'{:,}'.format(output['data']['height'])}}</td>
         </tr>
         <tr>
             <td>width</td>
-            {% if "width" in output %}
-            <td>{{'{:,}'.format(output["width"])}}</td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
+            <td>{{'{:,}'.format(output['data']['width'])}}</td>
         </tr>
         <tr>
             <td>texts</td>
-            {% if "texts" in output %}
             <td>
                 <ul>
-                    {% for text in output["texts"] %}
+                    {% for text in output['data']['texts'] %}
                     <li>{{text}}</li>
                     {% endfor %}
                 </ul>
             </td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
         </tr>
         <tr>
             <td>decoded_texts</td>
-            {% if "decoded_texts" in output %}
             <td>
                 <ul>
-                    {% for text in output["decoded_texts"] %}
+                    {% for text in output['data']['decoded_texts'] %}
                     <li>{{text}}</li>
                     {% endfor %}
                 </ul>
             </td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
         </tr>
         <tr>
             <td>polygons</td>
-            {% if "polygons" in output %}
             <td>
                 <ul>
-                    {% for p in output["polygons"] %}
+                    {% for p in output['data']['polygons'] %}
                     <li>{{p|string()}}</li>
                     {% endfor %}
                 </ul>
             </td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
         </tr>
         <tr>
             <td>product_name</td>
-            {% if "product_name" in output %}
-            <td>{{output["product_name"]}}</td>
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
+            <td>{{output['data']['product_name']}}</td>
         </tr>
         <tr>
             <td>price</td>
-            {% if "price" in output %}
-            {% if output["price"] is none %}
-            <td>null</td>
-            {% else %}
-            <td>{{output["price"]}}</td>
-            {% endif %}
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
+            <td>{{output['data']['price']}}</td>
         </tr>
         <tr>
             <td>price_index</td>
-            {% if "price_index" in output %}
-            {% if output["price_index"] is none %}
-            <td>null</td>
-            {% else %}
-            <td>{{output["price_index"]}}</td>
-            {% endif %}
-            {% else %}
-            <td>not in result</td>
-            {% endif %}
+            <td>{{output['data']['price_index']}}</td>
         </tr>
         </tbody>
+        {% endif %}
     </table>
-    {% endif %}
     <h3>Raw JSON: </h3>
-    <p>
-        The API return: {"code": int - code number, "message": string - the message,
-        "data": the result}. Here only show the "data" filed of response.
-    </p>
-    <div class="read_tag_json">
-        <pre>{{raw_out}}</pre>
-    </div>
+    <pre class="read_tag_json">{{ raw_out }}</pre>
     {% endif %}
 </main>
 
@@ -224,7 +181,8 @@
     <p>(+84) 77 777 5995</p>
     <p>
         Portfolio:
-        <a href="https://portfolio-698202522757.asia-southeast1.run.app" target="_blank" rel="noopener noreferrer">
+        <a href="https://portfolio-698202522757.asia-southeast1.run.app"
+           target="_blank" rel="noopener noreferrer">
             https://portfolio-698202522757.asia-southeast1.run.app
         </a>
     </p>

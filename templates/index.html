@@ -7,7 +7,7 @@
     <meta name="description" content="Render html for demo of Price Detection">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Price Detection Demo</title>
-    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -15,8 +15,10 @@
     <h1>Price Detection Demo</h1>
     <nav>
         <ul class="menu">
-            <li class="menu-li"><a href="/">Home</a></li>
-            <li class="menu-li"><a href="/demo-read-tag">demo-read-tag</a></li>
+            <li class="menu-li"><a href="{{ url_for('root') }}">Home</a></li>
+            <li class="menu-li">
+                <a href="{{ url_for('demo_read_tag') }}">demo-read-tag</a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -31,11 +33,12 @@
             minimum resources for reducing cost.
         </li>
         <li>
-            This page ONLY for demo, not APIs. Do not copy these demo page addresses as
-            APIs. Read API document for more details.
+            This page ONLY for demo, not APIs. Do not copy these demo page addresses
+            as APIs. Read API document for more details.
         </li>
         <li>
-            <a href="https://github.com/nguyennguyen0110/demo-price-detection" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/nguyennguyen0110/demo-price-detection"
+               target="_blank" rel="noopener noreferrer">
                 Link to source code
             </a>
         </li>
@@ -43,13 +46,14 @@
             We can follow MMOCR and Tesseract documents to fine-tune their pre-trained
             models. This notebook mimic what I did to fine-tune Tesseract 4.0 (please
             note that Colab and Tesseract version has changed over time):
-            <a href="https://colab.research.google.com/drive/1DrYHemCfhX8HsMcWCpc9VPQjvjKf7Vr-?usp=share_link" target="_blank" rel="noopener noreferrer">
+            <a href="https://colab.research.google.com/drive/1DrYHemCfhX8HsMcWCpc9VPQjvjKf7Vr-?usp=share_link"
+               target="_blank" rel="noopener noreferrer">
                 Link to Notebook
             </a>
         </li>
     </ul>
     <h3>Current APIs:</h3>
-    <a href="/demo-read-tag">/read-tag:</a>
+    <a href="{{ url_for('demo_read_tag') }}">/read-tag:</a>
     <ul>
         <li>
             Read all text from image, get first text (at the top of image) as product
@@ -69,7 +73,8 @@
     <p>(+84) 77 777 5995</p>
     <p>
         Portfolio:
-        <a href="https://portfolio-698202522757.asia-southeast1.run.app" target="_blank" rel="noopener noreferrer">
+        <a href="https://portfolio-698202522757.asia-southeast1.run.app"
+           target="_blank" rel="noopener noreferrer">
             https://portfolio-698202522757.asia-southeast1.run.app
         </a>
     </p>
