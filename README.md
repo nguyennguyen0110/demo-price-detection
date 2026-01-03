@@ -44,9 +44,8 @@ This is a demo project for portfolio page.
 
 ## Project status
 - Finished.
-- Current host: https://demo-price-detection-698202522757.asia-southeast1.run.app
-- This project’s source code is hosted on GitHub, with CI/CD handled by Cloud Build 
-and deployed via Cloud Run — both part of Google Cloud Platform (GCP).
+- Current host: localhost
+- This project’s source code is hosted on GitHub.
 
 
 ## Details
